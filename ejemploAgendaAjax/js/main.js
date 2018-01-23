@@ -11,27 +11,27 @@ function iniciar() {
 function leer() {
     var url = "http://daw2.iesoretania.es/alumno04/ejemploAjax/datos.php";
     var solicitud = new XMLHttpRequest();
+    var data = new FormData();
+    data.append('indice', '2');
     solicitud.addEventListener("load", mostrar);
-    solicitud.open("GET", url, true);
-    solicitud.send(null);
+    solicitud.open("POST", url, true);
+    solicitud.send(data);
 }
 function mostrar(e) {
     var datos = e.target;
     if(debug){
         console.log(datos);
     }
-    var nombres = datos.responseText.split(",");
-    if(debug){
-        for(var i=0, fin=nombres.length; i<fin;i++){
-            console.log("Nombre => " +nombres[i]);
-        }
-    }
-
     if(datos.status === 200){
        if(debug){
            console.log("CONEXIÓN CORRECTA");
        }
-        cogerNombre.innerHTML = JSON.parse(datos.responseText.split(",")[0]);
+
+        var misDatos = JSON.parse(datos.responseText);
+       if(debug){
+           console.log(misDatos);
+       }
+       cogerNombre.value = misDatos;
 
     }
 }
