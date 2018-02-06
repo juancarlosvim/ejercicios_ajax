@@ -5,8 +5,10 @@ let iniciar = () => {
     btnInsertar.addEventListener("click", insertarBD);
     let btnConsultar = document.getElementById('btnConsultar');
     btnConsultar.addEventListener("click", consultarBD);
-    /*var btnModificar = document.getElementById('btnModificar');
-    var btnEliminar = document.getElementById('btnELiminar');*/
+    let btnModificar = document.getElementById('btnModificar');
+    btnModificar.addEventListener("click", modificarBD);
+    let btnEliminar = document.getElementById('btnEliminar');
+    btnEliminar.addEventListener("click", eliminarBD);
 };
 
 let consultarBD = () =>{
@@ -80,24 +82,22 @@ let limpiardatos = () =>{
 let insertarBD = () =>{
     "use strict";
     let url = "http://daw2.iesoretania.es/recursos/bd_insertar_agenda.php";
-    let id = document.getElementById('txtId').value;
+    //let id = document.getElementById('txtId').value;
     let nombre = document.getElementById("txtNombre").value;
     let apellidos = document.getElementById("txtApellidos").value;
     let alias = document.getElementById("txtAlias").value;
     let direccion = document.getElementById("txtDireccion").value;
-    let poblacion = document.getElementById("txtPoblacion").value;
     let telefono = document.getElementById("txtTelefono").value;
     let imagen = document.getElementById("fFoto").files[0];
     let mensaje = document.getElementById('pMensaje');
     let estado = document.getElementById('estadoConexion');
     let ajax = new XMLHttpRequest();
     let formulario = new FormData();
-    formulario.append("txtid", id);
+    //formulario.append("txtid", id);
     formulario.append("txtalias", alias);
     formulario.append("txtnombre", nombre);
     formulario.append("txtapellidos", apellidos);
     formulario.append("txtdireccion", direccion);
-    formulario.append("txtpoblacion", poblacion);
     formulario.append("txttelefono", telefono);
     formulario.append("txtmovil", telefono);
     formulario.append("idfoto", imagen);
@@ -113,8 +113,8 @@ let insertarBD = () =>{
                 console.log(`valor row => ${datos.row}`);
                 console.log(`valor row1 => ${datos.row1}`);
             }
-            if(!datos.row <0){
-                mensaje.textContent=`El usuario con la id: ${datos.row1['LAST_INSERT_ID']} ha sido insertado `;
+            if(datos.row ===1){
+                mensaje.textContent=`El usuario con la id: ${datos.row1['LAST_INSERT_ID()']} ha sido insertado `;
             }else{
                 mensaje.textContent = `El usuario con el nombre: ${nombre} no ha sido insertado`;
             }
@@ -126,5 +126,76 @@ let insertarBD = () =>{
     ajax.send(formulario);
 
 };
+/*
+ MODIFICAR
+ */
+let modificarBD = () =>{
+    'use strict';
+    let url = "http://daw2.iesoretania.es/recursos/bd_modificar_agenda.php";
+    let id = document.getElementById('txtId').value;
+    let nombre = document.getElementById("txtNombre").value;
+    let apellidos = document.getElementById("txtApellidos").value;
+    let alias = document.getElementById("txtAlias").value;
+    let direccion = document.getElementById("txtDireccion").value;
+    let telefono = document.getElementById("txtTelefono").value;
+    let imagen = document.getElementById("fFoto").files[0];
+    let mensaje = document.getElementById('pMensaje');
+    let estado = document.getElementById('estadoConexion');
+    let ajax = new XMLHttpRequest();
+    let formulario = new FormData();
+    formulario.append("txtid", id);
+    formulario.append("txtalias", alias);
+    formulario.append("txtnombre", nombre);
+    formulario.append("txtapellidos", apellidos);
+    formulario.append("txtdireccion", direccion);
+    formulario.append("txttelefono", telefono);
+    formulario.append("txtmovil", telefono);
+    formulario.append("idfoto", imagen);
+    ajax.addEventListener("load", (e) =>{
+        if(ajax.status===200 && ajax.readyState===4){
+            if(debug){
+                console.log("ENTRO");
+            }
+            estado.textContent = `Conexión correcta`;
+            let datos = JSON.parse(e.target.responseText);
+            if(datos.row ===1){
+                mensaje.textContent = `El usuario con la id: ${id} ha sido modificado`;
+            }else{
+                mensaje.textContent = `El usuario con la id: ${id} no ha sido modificado`;
+            }
 
+        }else{
+            estado.textContent = 'Error en la conexión';
+        }
+    });
+    ajax.open("POST", url, true);
+    ajax.send(formulario);
+};
+
+/*
+ Eliminar
+ */
+let eliminarBD = () =>{
+    let url = "http://daw2.iesoretania.es/recursos/bd_borrar_agenda.php";
+    let id = document.getElementById('txtId').value;
+    let mensaje = document.getElementById('pMensaje');
+    let estado = document.getElementById('estadoConexion');
+    let ajax = new XMLHttpRequest();
+    let formulario = new FormData();
+    formulario.append("txtid", id);
+    ajax.addEventListener("load", (e) =>{
+        if(ajax.status===200 && ajax.readyState===4){
+            estado.textContent = `Conexión correcta`;
+            let datos = JSON.parse(e.target.responseText);
+            if(datos.row ===1 ){
+                mensaje.textContent = `El usuario con la id: ${id} ha sido eliminado`;
+            }else{
+                mensaje.textContent = `El usuario con la id: ${id} no ha sido eliminado`;
+            }
+        }
+    });
+    ajax.open("POST", url, true);
+    ajax.send(formulario);
+
+};
 window.addEventListener("DOMContentLoaded", iniciar);
