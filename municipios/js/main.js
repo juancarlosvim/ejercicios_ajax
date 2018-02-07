@@ -10,7 +10,7 @@ let iniciar = () =>{
 
                 let dato = e.target;
                 let provincias = [];
-                   provincias =  JSON.parse(dato.responseText);
+                provincias =  JSON.parse(dato.responseText);
                 console.log(provincias);
                 let cargarProvincias = document.getElementById('slProvincias');
 
@@ -32,8 +32,8 @@ let iniciar = () =>{
 
     let seleccionarProvincia = document.getElementById('slProvincias');
     seleccionarProvincia.addEventListener("click", (e)=>{
-       let valor= e.target.id;
-       console.log(valor);
+        let valor= e.target.id;
+        console.log(valor);
         let url = "http://daw2.iesoretania.es/alumno04/bdRecursos/municipios.php";
         let ajax = new XMLHttpRequest();
         let formulario = new FormData();
@@ -56,6 +56,9 @@ let iniciar = () =>{
                     }
                 }
                 let cargarMunicipios = document.getElementById('slMunicipios');
+                while(cargarMunicipios.childNodes.length>0){
+                    cargarMunicipios.removeChild(cargarMunicipios.childNodes[0]);
+                }
                 for(let i=0;i<arrayMunicipios.length;i++){
                     let opcion = document.createElement("option");
                     opcion.setAttribute(`id`,`${arrayMunicipios[i].id_municipio}`);
@@ -73,6 +76,4 @@ let iniciar = () =>{
     });
 
 };
-
-
-window.addEventListener("DOMContentLoaded", iniciar)
+window.addEventListener("DOMContentLoaded", iniciar);
