@@ -14,18 +14,14 @@ let iniciar = () =>{
             console.log(datos.ListaObrasResult);
             let nombre = [];
             let editorial = [];
-            let fecha = [];
             let contenido = [];
             contenido = datos.ListaObrasResult;
-            /*for(let i=0;i<contenido.length;i++){
-                nombre[i] = contenido[i];
-            }*/
             for  (let item in datos.ListaObrasResult){
-               nombre += contenido[item].autores;
-               editorial += contenido[item].editorial;
+                nombre += contenido[item].autores;
+                editorial += contenido[item].editorial;
             }
-           console.log(nombre);
-           console.log(editorial);
+            console.log(nombre);
+            console.log(editorial);
 
         }else{
             if(debug){
