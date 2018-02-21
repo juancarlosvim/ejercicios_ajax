@@ -22,7 +22,6 @@ let iniciar = () =>{
             }
             console.log(nombre);
             console.log(editorial);
-
         }else{
             if(debug){
                 console.log("CONEXION INCORRECTA");
